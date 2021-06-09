@@ -1,0 +1,10 @@
+questions:
+  filePath: "data/questions.csv"
+score-properties:
+  scores:
+    0: zero
+    1: awfull
+    2: fail
+    3: normal
+    4: good
+    5: excelent
