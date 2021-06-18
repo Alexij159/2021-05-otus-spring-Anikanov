@@ -1,7 +1,7 @@
 package homework.dao;
 
-import com.anikan.homework.Exceptions.QuestionsNotFoundException;
-import com.anikan.homework.domain.Question;
+import homework.Exceptions.QuestionsNotFoundException;
+import homework.domain.Question;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

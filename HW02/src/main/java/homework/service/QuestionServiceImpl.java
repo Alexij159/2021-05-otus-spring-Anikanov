@@ -1,7 +1,7 @@
 package homework.service;
 
-import com.anikan.homework.dao.QuestionDao;
-import com.anikan.homework.domain.Question;
+import homework.dao.QuestionDao;
+import homework.domain.Question;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

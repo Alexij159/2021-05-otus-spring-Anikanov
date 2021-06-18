@@ -1,11 +1,9 @@
 package homework.service;
 
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TesterRunner implements ApplicationRunner {
+public class TesterRunner {
 
     private final TesterService testerService;
 
@@ -13,8 +11,8 @@ public class TesterRunner implements ApplicationRunner {
         this.testerService = testerService;
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+
+    public void run() {
         testerService.executeTest();
     }
 

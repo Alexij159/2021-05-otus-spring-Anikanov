@@ -1,9 +1,9 @@
 package homework.service;
 
-import com.anikan.homework.config.ScoreConfig;
-import com.anikan.homework.domain.Question;
-import com.anikan.homework.domain.TestResult;
-import com.anikan.homework.domain.User;
+import homework.config.ScoreConfig;
+import homework.domain.Question;
+import homework.domain.TestResult;
+import homework.domain.User;
 import org.springframework.stereotype.Service;
 
 
@@ -35,7 +35,7 @@ public class TesterService {
     }
 
     public void showQuestions() {
-        System.out.println("Вам предстоит ответить на следующие вопросы:\n");
+        ioService.println("Вам предстоит ответить на следующие вопросы:\n");
         questionService.getQuestions().forEach(q -> ioService.printf("%s. %s\n",q.getId(),q.getWording()));
     }
 

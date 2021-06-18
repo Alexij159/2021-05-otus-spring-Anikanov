@@ -1,14 +1,21 @@
 package homework.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
-@ConfigurationProperties(prefix = "score-properties")
+
 public class ScoreConfig {
+
     private Map<Integer,String> scores;
+
+    public ScoreConfig(@Value("#{${score}}") Map<Integer, String> scores) {
+        this.scores = scores;
+    }
 
     public Map<Integer, String> getScores() {
         return scores;

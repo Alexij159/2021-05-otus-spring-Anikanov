@@ -1,12 +1,16 @@
 package homework.dao;
 
-import com.anikan.homework.Exceptions.QuestionsNotFoundException;
-import com.anikan.homework.domain.Question;
+import homework.Exceptions.LoadWentWrongException;
+import homework.Exceptions.QuestionsNotFoundException;
+import homework.domain.Question;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -19,21 +23,18 @@ import java.util.List;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-@Repository
+@Component
+@PropertySources( {@PropertySource("classpath:scores.properties"),
+        @PropertySource("classpath:application.properties")})
 public class QuestionDaoImpl implements QuestionDao{
 
 
     private final List<Question> questions;
-    private final String questionsFilePath;
+
+    private String questionsFilePath;
 
 
-//
-//    @PostConstruct
-//    private void repoInitialize(){
-//        questions = new LinkedList<>();
-//    }
-
-    public QuestionDaoImpl(@Value ("${questions.filePath}")String questionsFilePath) {
+    public QuestionDaoImpl( @Value("${questions.filePath}") String questionsFilePath) {
         this.questionsFilePath = questionsFilePath;
         questions = new LinkedList<>();
         loadQuestions();
@@ -73,15 +74,19 @@ public class QuestionDaoImpl implements QuestionDao{
         }
         CsvToBean<Question> csv = new CsvToBean<>();
         csv.setMappingStrategy(setColumnMapping());
-        try {
-            csv.setCsvReader(new CSVReader(new FileReader(questionsFile)));
+        try (CSVReader reader = new CSVReader(new FileReader(questionsFile))){
+            csv.setCsvReader(reader);
+            List<Question> questions = csv.parse();
+            questions.forEach(this::save);
         } catch (FileNotFoundException e) {
             throw new QuestionsNotFoundException(e);
+        } catch (IOException e) {
+            throw new LoadWentWrongException(e);
         }
-        List<Question> questions = csv.parse();
-        for (Question q : questions) {
-            save(q);
-        }
+    }
+
+    public void setQuestionsFilePath(String questionsFilePath) {
+        this.questionsFilePath = questionsFilePath;
     }
 
     private ColumnPositionMappingStrategy<Question> setColumnMapping()

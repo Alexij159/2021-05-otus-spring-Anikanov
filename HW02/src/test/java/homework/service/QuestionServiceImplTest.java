@@ -1,7 +1,8 @@
 package homework.service;
 
-import com.anikan.homework.dao.QuestionDao;
-import com.anikan.homework.domain.Question;
+
+import homework.domain.Question;
+import homework.dao.QuestionDao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

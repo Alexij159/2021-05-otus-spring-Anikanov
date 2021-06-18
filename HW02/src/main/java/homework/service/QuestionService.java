@@ -1,7 +1,7 @@
 package homework.service;
 
 
-import com.anikan.homework.domain.Question;
+import homework.domain.Question;
 
 import java.util.List;
 
