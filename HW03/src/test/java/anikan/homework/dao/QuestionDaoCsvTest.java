@@ -18,7 +18,7 @@ import static org.mockito.BDDMockito.given;
 
 
 @ExtendWith(MockitoExtension.class)
-class QuestionDaoImplTest {
+class QuestionDaoCsvTest {
     @Mock
     private LocaleProvider localeProvider;
     private static final String QUESTIONS_FILE_PATH = "data/questions_";
@@ -27,7 +27,7 @@ class QuestionDaoImplTest {
     @Test
     public void daoInitializeTest(){
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoImpl(QUESTIONS_FILE_PATH, localeProvider);
+        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, localeProvider);
         assertThat(questionDao).isNotNull();
     }
 
@@ -35,7 +35,7 @@ class QuestionDaoImplTest {
     @Test
     public void getAllReturnEmptyList(){
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoImpl(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
+        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
         assertThat(questionDao.getAll()).isEmpty();
     }
 
@@ -49,7 +49,7 @@ class QuestionDaoImplTest {
         questions.add(new Question("5","Why so serious?","Batman"));
 
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoImpl(QUESTIONS_FILE_PATH, localeProvider);
+        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, localeProvider);
         assertThat(questionDao.getAll()).usingRecursiveComparison().isEqualTo(questions);
     }
 
@@ -57,13 +57,13 @@ class QuestionDaoImplTest {
     @Test
     void loadQuestionsShouldThrowQuestionsNotFoundException() {
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        assertThrows(QuestionsNotFoundException.class, () -> new QuestionDaoImpl("NonExistQuestions.csv", localeProvider));
+        assertThrows(QuestionsNotFoundException.class, () -> new QuestionDaoCsv("NonExistQuestions.csv", localeProvider));
     }
 
     @Test
     void saveNewQuestionCorrectly() {
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoImpl(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
+        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
         assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(true);
         assertThat(questionDao.getById("1").getWording()).isEqualTo("WTF?");
     }
@@ -71,7 +71,7 @@ class QuestionDaoImplTest {
     @Test
     void saveRepeatedQuestionReturnFalse() {
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoImpl(QUESTIONS_FILE_PATH, localeProvider);
+        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, localeProvider);
         //assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(true);
         assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(false);
 
@@ -80,7 +80,7 @@ class QuestionDaoImplTest {
     @Test
     void getByIdNormalWork() {
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoImpl(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
+        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
         questionDao.save(new Question("1", "WTF?","Nothing"));
         assertThat(questionDao.getById("1").getCorrectAnswer()).isEqualTo("Nothing");
     }
@@ -88,7 +88,7 @@ class QuestionDaoImplTest {
     @Test
     void getByIdShouldReturnNull() {
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoImpl(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
+        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
         questionDao.save(new Question("1", "WTF?","Nothing"));
         assertThat(questionDao.getById("2")).isNull();
     }

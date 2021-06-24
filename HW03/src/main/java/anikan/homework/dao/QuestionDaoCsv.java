@@ -21,7 +21,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Repository
-public class QuestionDaoImpl implements QuestionDao {
+public class QuestionDaoCsv implements QuestionDao {
 
 
     private List<Question> questions;
@@ -29,7 +29,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
 
 
-    public QuestionDaoImpl(@Value("${questions.filePath}") String questionsFilePath, LocaleProvider localeProvider) {
+    public QuestionDaoCsv(@Value("${questions.filePath}") String questionsFilePath, LocaleProvider localeProvider) {
         this.questionsFilePath = questionsFilePath + localeProvider.getLocale() + ".csv";
         questions = new LinkedList<>();
         loadQuestions();

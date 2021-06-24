@@ -13,10 +13,12 @@ public class LocaleProvider {
     private final Locale locale;
 
     public LocaleProvider(@Value("${locale:}")Locale locale) {
-        if (isNull(locale))
+        if (isNull(locale)) {
             this.locale = Locale.getDefault();
-        else
+        }
+        else {
             this.locale = locale;
+        }
     }
 
     public Locale getLocale() {

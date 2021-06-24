@@ -1,4 +1,4 @@
-locale: "ru_Ru"
+locale: "en_US"
 questions:
   filePath: "data/questions_"
 score-properties:

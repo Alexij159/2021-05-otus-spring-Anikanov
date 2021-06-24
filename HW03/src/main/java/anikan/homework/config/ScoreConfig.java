@@ -10,10 +10,6 @@ import java.util.Map;
 public class ScoreConfig {
     private Map<Integer,String> scores;
 
-    public Map<Integer, String> getScores() {
-        return scores;
-    }
-
     public void setScores(Map<Integer, String> scores) {
         this.scores = scores;
     }
