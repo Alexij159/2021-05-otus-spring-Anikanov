@@ -1,0 +1,11 @@
+locale: "ru_Ru"
+questions:
+  filePath: "data/questions_"
+score-properties:
+  scores:
+    0: zero
+    1: awfull
+    2: fail
+    3: normal
+    4: good
+    5: excelent

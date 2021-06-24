@@ -1,0 +1,10 @@
+locale: "en_US"
+questions:
+  filePath:
+    full: "data/questions_"
+    empty: "data/emptyQuestions_"
+
+spring:
+  shell:
+    interactive:
+      enabled: false
