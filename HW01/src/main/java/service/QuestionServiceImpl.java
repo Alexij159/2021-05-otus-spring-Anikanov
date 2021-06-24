@@ -12,6 +12,7 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionLoader questionLoader;
     private QuestionDao dao;
 
+
     public QuestionServiceImpl(QuestionLoader questionLoader, QuestionDao dao) {
         this.questionLoader = questionLoader;
         this.dao = dao;
