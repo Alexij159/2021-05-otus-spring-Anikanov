@@ -20,13 +20,13 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Repository
-public class QuestionDaoImpl implements QuestionDao {
+public class QuestionDaoCsv implements QuestionDao {
 
 
     private List<Question> questions;
     private final String questionsFilePath;
 
-    public QuestionDaoImpl(QuestionsFileNameProvider questionsFileNameProvider) {
+    public QuestionDaoCsv(QuestionsFileNameProvider questionsFileNameProvider) {
         this.questionsFilePath = questionsFileNameProvider.getQuestionsFileName();
         questions = new LinkedList<>();
         loadQuestions();

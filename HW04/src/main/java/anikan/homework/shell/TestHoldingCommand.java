@@ -1,7 +1,7 @@
 package anikan.homework.shell;
 
 import anikan.homework.domain.User;
-import anikan.homework.service.TesterService;
+import anikan.homework.service.TesterServiceImpl;
 import anikan.homework.service.UserService;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
@@ -12,10 +12,10 @@ import org.springframework.shell.standard.ShellMethodAvailability;
 public class TestHoldingCommand {
 
     private User user;
-    private final TesterService testerService;
+    private final TesterServiceImpl testerService;
     private final UserService userService;
 
-    public TestHoldingCommand(TesterService testerService, UserService userService) {
+    public TestHoldingCommand(TesterServiceImpl testerService, UserService userService) {
         this.testerService = testerService;
         this.userService = userService;
     }

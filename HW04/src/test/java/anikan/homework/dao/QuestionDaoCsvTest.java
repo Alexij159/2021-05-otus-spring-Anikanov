@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
-class QuestionDaoImplTest {
+class QuestionDaoCsvTest {
 
     private static final String QUESTIONS_FILE_PATH = "data/questions_";
     private static final String EMPTY_QUESTIONS_FILE_PATH = "data/emptyQuestions_";
@@ -63,7 +63,7 @@ class QuestionDaoImplTest {
 
     @Test
     void loadQuestionsShouldThrowQuestionsNotFoundException() {
-        assertThrows(QuestionsNotFoundException.class, () -> new QuestionDaoImpl(new QuestionsFileNameProvider("NonExistQuestions.csv", new LocaleProvider(null))));
+        assertThrows(QuestionsNotFoundException.class, () -> new QuestionDaoCsv(new QuestionsFileNameProvider("NonExistQuestions.csv", new LocaleProvider(null))));
     }
 
     @Test
@@ -110,13 +110,13 @@ class QuestionDaoImplTest {
 
         @Bean("fullQuestionDao")
         QuestionDao getFullQuestionDao(@Qualifier("fullQuestionProvider") QuestionsFileNameProvider questionsFileNameProvider){
-            return new QuestionDaoImpl(questionsFileNameProvider);
+            return new QuestionDaoCsv(questionsFileNameProvider);
         }
         
 
         @Bean("emptyQuestionDao")
         QuestionDao getEmptyQuestionDao(@Qualifier("emptyQuestionProvider") QuestionsFileNameProvider questionsFileNameProvider){
-            return new QuestionDaoImpl(questionsFileNameProvider);
+            return new QuestionDaoCsv(questionsFileNameProvider);
         }
     }
 }
