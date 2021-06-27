@@ -18,7 +18,7 @@ public class TesterServiceImpl implements TesterService {
     private final LocalizedIOService localizedIOService;
 
 
-    public TesterServiceImpl(QuestionService questionService, ScoreConfig scoreProperties, IOService ioService, UserService userService, LocaleMessagesSource localeMessagesSource, LocalizedIOService localizedIOService) {
+    public TesterServiceImpl(QuestionService questionService, ScoreConfig scoreProperties, UserService userService, LocalizedIOService localizedIOService) {
         this.questionService = questionService;
         this.scoreProperties = scoreProperties;
         this.localizedIOService = localizedIOService;

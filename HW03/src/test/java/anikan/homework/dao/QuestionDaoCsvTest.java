@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -61,36 +62,19 @@ class QuestionDaoCsvTest {
     }
 
     @Test
-    void saveNewQuestionCorrectly() {
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
-        assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(true);
-        assertThat(questionDao.getById("1").getWording()).isEqualTo("WTF?");
-    }
-
-    @Test
-    void saveRepeatedQuestionReturnFalse() {
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, localeProvider);
-        //assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(true);
-        assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(false);
-
-    }
-
-    @Test
     void getByIdNormalWork() {
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
-        questionDao.save(new Question("1", "WTF?","Nothing"));
+    QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, localeProvider);
+        //questionDao.save(new Question("1", "WTF?","Nothing"));
         assertThat(questionDao.getById("1").getCorrectAnswer()).isEqualTo("Nothing");
     }
 
     @Test
     void getByIdShouldReturnNull() {
         given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
-        questionDao.save(new Question("1", "WTF?","Nothing"));
-        assertThat(questionDao.getById("2")).isNull();
+        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, localeProvider);
+//        questionDao.save(new Question("1", "WTF?","Nothing"));
+        assertThat(questionDao.getById("8")).isNull();
     }
 
 }
