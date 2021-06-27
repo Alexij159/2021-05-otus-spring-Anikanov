@@ -5,19 +5,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final IOService ioService;
-    private final LocaleMessagesSource localeMessagesSource;
+    private final LocalizedIOService localizedIOService;
 
-    public UserServiceImpl(IOService ioService, LocaleMessagesSource localeMessagesSource) {
-        this.ioService = ioService;
-        this.localeMessagesSource = localeMessagesSource;
+    public UserServiceImpl(LocalizedIOService localizedIOService) {
+        this.localizedIOService = localizedIOService;
     }
 
     @Override
     public String welcomeUser() {
-        ioService.println(localeMessagesSource.getMessage("tester.greeting"));
-        ioService.println(localeMessagesSource.getMessage("tester.name-question"));
-        return ioService.readLine();
+        localizedIOService.println("tester.greeting");
+        localizedIOService.println("tester.name-question");
+        return localizedIOService.readLine();
     }
 
 }
