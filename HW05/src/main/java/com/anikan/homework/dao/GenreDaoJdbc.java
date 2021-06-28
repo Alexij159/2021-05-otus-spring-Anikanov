@@ -50,8 +50,8 @@ public class GenreDaoJdbc implements GenreDao {
     @Override
     public boolean updateById(Long id, Genre genre) {
         MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", id,"name", genre.getName()));
-        int updatedRows = namedParameterJdbcOperations.update("update genres set `name` :=:name, " +
-                        "birthDate = :birthDate where id = :id",
+        int updatedRows = namedParameterJdbcOperations.update("update genres set `name` =:name " +
+                        " where id = :id",
                 params);
 
         if (updatedRows == 1)
