@@ -18,8 +18,8 @@ public class LocalizedIOServiceImpl implements LocalizedIOService {
         ioService.printf(localeMessagesSource.getMessage(s),args);
     }
 
-    public void printfWithParameterizedLocalization(String s, List<Object> localizationParams){
-        ioService.printf(localeMessagesSource.getMessage(s, localizationParams.toArray()));
+    public void printfWithParameterizedLocalization(String s, Object ...localizationParams){
+        ioService.printf(localeMessagesSource.getMessage(s, localizationParams));
     }
 
     public void printfWithoutLocalization(String s, Object... args){

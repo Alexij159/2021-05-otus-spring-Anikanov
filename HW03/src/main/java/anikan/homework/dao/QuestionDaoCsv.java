@@ -1,8 +1,8 @@
 package anikan.homework.dao;
 
 import anikan.homework.Exceptions.QuestionsNotFoundException;
-import anikan.homework.config.LocaleProvider;
 import anikan.homework.domain.Question;
+import anikan.homework.service.FileNameProvider;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
@@ -18,35 +18,20 @@ import static java.util.Objects.nonNull;
 
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
-
-
-    private final List<Question> questions;
     private final String questionsFilePath;
 
-
-
-    public QuestionDaoCsv(@Value("${questions.filePath}") String questionsFilePath, LocaleProvider localeProvider) {
-        this.questionsFilePath = questionsFilePath + localeProvider.getLocale() + ".csv";
-        questions = new LinkedList<>();
+    public QuestionDaoCsv(FileNameProvider fileNameProvider) {
+        questionsFilePath = fileNameProvider.getQuestionsFilePath();
         loadQuestions();
     }
 
     @Override
     public List<Question> getAll() {
-        return new LinkedList<>(questions);
+        return loadQuestions();
     }
 
 
-    @Override
-    public Question getById(String id) {
-        if ("".equals(id) )
-            return null;
-        return questions.stream().filter(question -> nonNull(question.getId()) && id.equals(question.getId()))
-                .findFirst().orElse(null);
-    }
-
-
-    private void loadQuestions() {
+    private List<Question> loadQuestions() {
         try (InputStream questionsStream = this.getClass().getClassLoader().getResourceAsStream(questionsFilePath)){
             if (isNull(questionsStream))
                 throw new QuestionsNotFoundException("Файл с вопросами отсутствует!");
@@ -56,7 +41,7 @@ public class QuestionDaoCsv implements QuestionDao {
             csv.setMappingStrategy(setColumnMapping());
             csv.setCsvReader(new CSVReader(questionsReader));
             List<Question> questionsToSave = csv.parse();
-            questions.addAll(questionsToSave);
+            return questionsToSave;
 
         } catch (FileNotFoundException e) {
             throw new QuestionsNotFoundException(e);
