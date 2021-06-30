@@ -2,7 +2,7 @@ package anikan.homework.dao;
 
 import anikan.homework.Exceptions.QuestionsNotFoundException;
 import anikan.homework.domain.Question;
-import anikan.homework.config.LocaleProvider;
+import anikan.homework.service.FileNameProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -20,22 +20,22 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class QuestionDaoCsvTest {
     @Mock
-    private LocaleProvider localeProvider;
+    private FileNameProvider fileNameProvider;
     private static final String QUESTIONS_FILE_PATH = "data/questions_";
     private static final String EMPTY_QUESTIONS_FILE_PATH = "data/emptyQuestions_";
 
     @Test
     public void daoInitializeTest(){
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, localeProvider);
+        given(fileNameProvider.getQuestionsFilePath()).willReturn(QUESTIONS_FILE_PATH + Locale.US + ".csv");
+        QuestionDao questionDao = new QuestionDaoCsv(fileNameProvider);
         assertThat(questionDao).isNotNull();
     }
 
 
     @Test
     public void getAllReturnEmptyList(){
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
+        given(fileNameProvider.getQuestionsFilePath()).willReturn(EMPTY_QUESTIONS_FILE_PATH + Locale.US + ".csv");
+        QuestionDao questionDao = new QuestionDaoCsv(fileNameProvider);
         assertThat(questionDao.getAll()).isEmpty();
     }
 
@@ -48,49 +48,18 @@ class QuestionDaoCsvTest {
         questions.add(new Question("4","What is the capital of Great Britain?","London"));
         questions.add(new Question("5","Why so serious?","Batman"));
 
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, localeProvider);
+
+        given(fileNameProvider.getQuestionsFilePath()).willReturn(QUESTIONS_FILE_PATH + Locale.US + ".csv");
+        QuestionDao questionDao = new QuestionDaoCsv(fileNameProvider);
         assertThat(questionDao.getAll()).usingRecursiveComparison().isEqualTo(questions);
     }
 
 
     @Test
     void loadQuestionsShouldThrowQuestionsNotFoundException() {
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        assertThrows(QuestionsNotFoundException.class, () -> new QuestionDaoCsv("NonExistQuestions.csv", localeProvider));
-    }
 
-    @Test
-    void saveNewQuestionCorrectly() {
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
-        assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(true);
-        assertThat(questionDao.getById("1").getWording()).isEqualTo("WTF?");
-    }
-
-    @Test
-    void saveRepeatedQuestionReturnFalse() {
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, localeProvider);
-        //assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(true);
-        assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(false);
-
-    }
-
-    @Test
-    void getByIdNormalWork() {
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
-        questionDao.save(new Question("1", "WTF?","Nothing"));
-        assertThat(questionDao.getById("1").getCorrectAnswer()).isEqualTo("Nothing");
-    }
-
-    @Test
-    void getByIdShouldReturnNull() {
-        given(localeProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, localeProvider);
-        questionDao.save(new Question("1", "WTF?","Nothing"));
-        assertThat(questionDao.getById("2")).isNull();
+        given(fileNameProvider.getQuestionsFilePath()).willReturn("NonExistQuestions" + Locale.US + ".csv");
+        assertThrows(QuestionsNotFoundException.class, () -> new QuestionDaoCsv(fileNameProvider));
     }
 
 }
