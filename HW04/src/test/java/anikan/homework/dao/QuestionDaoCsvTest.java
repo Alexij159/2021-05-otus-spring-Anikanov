@@ -4,7 +4,9 @@ import anikan.homework.Exceptions.QuestionsNotFoundException;
 import anikan.homework.config.LocaleProvider;
 import anikan.homework.config.QuestionsFileNameProvider;
 import anikan.homework.domain.Question;
+import anikan.homework.service.FileNameProvider;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -98,6 +100,9 @@ class QuestionDaoCsvTest {
     @SpringBootConfiguration
     @Import(LocaleProvider.class)
     static class TestConfiguration {
+        @Mock
+        private FileNameProvider fileNameProvider;
+
         @Bean("fullQuestionProvider")
         QuestionsFileNameProvider getFullQuestionProvider(@Value("${questions.filePath.full}") String questionsFilePath, LocaleProvider localeProvider){
             return new QuestionsFileNameProvider(questionsFilePath, localeProvider);

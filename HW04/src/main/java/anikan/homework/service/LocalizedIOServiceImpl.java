@@ -16,13 +16,8 @@ public class LocalizedIOServiceImpl implements LocalizedIOService{
     }
 
     @Override
-    public void localizedPrintf(String messageId, Object ...args){
-        ioService.printf(localeMessagesSource.getMessage(messageId),args);
-    }
-
-    @Override
-    public void localizedPrintfWithLocalizationParams(String messageId, List<Object> localizationParams, Objects ...args){
-        ioService.printf(localeMessagesSource.getMessage(messageId, localizationParams.toArray()), args);
+    public void localizedPrintfWithLocalizationParams(String messageId, Object ...localizationParams){
+        ioService.printf(localeMessagesSource.getMessage(messageId, localizationParams));
     }
     @Override
     public void printf(String s, Object... args){

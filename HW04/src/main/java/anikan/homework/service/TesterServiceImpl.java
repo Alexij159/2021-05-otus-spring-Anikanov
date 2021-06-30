@@ -42,7 +42,7 @@ public class TesterServiceImpl implements TesterService {
     private int test(User user) {
         int currentScore = 0;
         for (Question q :questionService.getQuestions()) {
-            localizedIOService.localizedPrintfWithLocalizationParams("tester.enter-answer", Arrays.asList(new Object[]{user.getName(), q.getId()}));
+            localizedIOService.localizedPrintfWithLocalizationParams("tester.enter-answer", user.getName(), q.getId());
             String answer = localizedIOService.readLine();
             if (q.getCorrectAnswer().equalsIgnoreCase(answer))
                 currentScore++;
