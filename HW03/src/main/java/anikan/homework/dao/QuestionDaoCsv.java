@@ -22,16 +22,10 @@ public class QuestionDaoCsv implements QuestionDao {
 
     public QuestionDaoCsv(FileNameProvider fileNameProvider) {
         questionsFilePath = fileNameProvider.getQuestionsFilePath();
-        loadQuestions();
     }
 
     @Override
     public List<Question> getAll() {
-        return loadQuestions();
-    }
-
-
-    private List<Question> loadQuestions() {
         try (InputStream questionsStream = this.getClass().getClassLoader().getResourceAsStream(questionsFilePath)){
             if (isNull(questionsStream))
                 throw new QuestionsNotFoundException("Файл с вопросами отсутствует!");

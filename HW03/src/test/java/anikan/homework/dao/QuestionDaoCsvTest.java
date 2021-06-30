@@ -26,16 +26,16 @@ class QuestionDaoCsvTest {
 
     @Test
     public void daoInitializeTest(){
-        given(fileNameProvider.getQuestionsFilePath()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, fileNameProvider);
+        given(fileNameProvider.getQuestionsFilePath()).willReturn(QUESTIONS_FILE_PATH + Locale.US + ".csv");
+        QuestionDao questionDao = new QuestionDaoCsv(fileNameProvider);
         assertThat(questionDao).isNotNull();
     }
 
 
     @Test
     public void getAllReturnEmptyList(){
-        given(fileNameProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(EMPTY_QUESTIONS_FILE_PATH, fileNameProvider);
+        given(fileNameProvider.getQuestionsFilePath()).willReturn(EMPTY_QUESTIONS_FILE_PATH + Locale.US + ".csv");
+        QuestionDao questionDao = new QuestionDaoCsv(fileNameProvider);
         assertThat(questionDao.getAll()).isEmpty();
     }
 
@@ -48,16 +48,18 @@ class QuestionDaoCsvTest {
         questions.add(new Question("4","What is the capital of Great Britain?","London"));
         questions.add(new Question("5","Why so serious?","Batman"));
 
-        given(fileNameProvider.getLocale()).willReturn(Locale.US);
-        QuestionDao questionDao = new QuestionDaoCsv(QUESTIONS_FILE_PATH, fileNameProvider);
+
+        given(fileNameProvider.getQuestionsFilePath()).willReturn(QUESTIONS_FILE_PATH + Locale.US + ".csv");
+        QuestionDao questionDao = new QuestionDaoCsv(fileNameProvider);
         assertThat(questionDao.getAll()).usingRecursiveComparison().isEqualTo(questions);
     }
 
 
     @Test
     void loadQuestionsShouldThrowQuestionsNotFoundException() {
-        given(fileNameProvider.getLocale()).willReturn(Locale.US);
-        assertThrows(QuestionsNotFoundException.class, () -> new QuestionDaoCsv("NonExistQuestions.csv", fileNameProvider));
+
+        given(fileNameProvider.getQuestionsFilePath()).willReturn("NonExistQuestions" + Locale.US + ".csv");
+        assertThrows(QuestionsNotFoundException.class, () -> new QuestionDaoCsv(fileNameProvider));
     }
 
 }
