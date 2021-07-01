@@ -2,7 +2,6 @@ package anikan.homework.dao;
 
 import anikan.homework.Exceptions.QuestionsNotFoundException;
 import anikan.homework.config.LocaleProvider;
-import anikan.homework.config.QuestionsFileNameProvider;
 import anikan.homework.domain.Question;
 import anikan.homework.service.FileNameProvider;
 import org.junit.jupiter.api.Test;
@@ -26,9 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 class QuestionDaoCsvTest {
 
-    private static final String QUESTIONS_FILE_PATH = "data/questions_";
-    private static final String EMPTY_QUESTIONS_FILE_PATH = "data/emptyQuestions_";
-
     @Autowired
     @Qualifier("fullQuestionDao")
     QuestionDao fullQuestionDao;
@@ -45,7 +41,6 @@ class QuestionDaoCsvTest {
 
 
     @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void getAllReturnEmptyList(){
         assertThat(emptyQuestionDao.getAll()).isEmpty();
     }
@@ -64,64 +59,36 @@ class QuestionDaoCsvTest {
 
 
     @Test
-    void loadQuestionsShouldThrowQuestionsNotFoundException() {
-        assertThrows(QuestionsNotFoundException.class, () -> new QuestionDaoCsv(new QuestionsFileNameProvider("NonExistQuestions.csv", new LocaleProvider(null))));
+    void getAllShouldThrowQuestionsNotFoundException() {
+        QuestionDaoCsv questionDaoCsv = new QuestionDaoCsv(new FileNameProvider("NonExistQuestions.csv", new LocaleProvider(null)));
+        assertThrows(QuestionsNotFoundException.class, questionDaoCsv::getAll);
     }
 
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    void saveNewQuestionCorrectly() {
-        assertThat(emptyQuestionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(true);
-        assertThat(emptyQuestionDao.getById("1").getWording()).isEqualTo("WTF?");
-    }
 
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    void saveRepeatedQuestionReturnFalse() {
-        //assertThat(questionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(true);
-        assertThat(fullQuestionDao.save(new Question("1", "WTF?","Nothing"))).isEqualTo(false);
-
-    }
-
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    void getByIdNormalWork() {
-        emptyQuestionDao.save(new Question("1", "WTF?","Nothing"));
-        assertThat(emptyQuestionDao.getById("1").getCorrectAnswer()).isEqualTo("Nothing");
-    }
-
-    @Test
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    void getByIdShouldReturnNull() {
-        emptyQuestionDao.save(new Question("1", "WTF?","Nothing"));
-        assertThat(emptyQuestionDao.getById("2")).isNull();
-    }
 
     @SpringBootConfiguration
     @Import(LocaleProvider.class)
     static class TestConfiguration {
-        @Mock
-        private FileNameProvider fileNameProvider;
 
         @Bean("fullQuestionProvider")
-        QuestionsFileNameProvider getFullQuestionProvider(@Value("${questions.filePath.full}") String questionsFilePath, LocaleProvider localeProvider){
-            return new QuestionsFileNameProvider(questionsFilePath, localeProvider);
+        FileNameProvider getFullQuestionProvider(@Value("${questions.filePath.full}") String questionsFilePath, LocaleProvider localeProvider){
+            return new FileNameProvider(questionsFilePath, localeProvider);
         }
 
         @Bean("emptyQuestionProvider")
-        QuestionsFileNameProvider getEmptyQuestionProvider(@Value("${questions.filePath.empty}") String questionsFilePath, LocaleProvider localeProvider){
-            return new QuestionsFileNameProvider(questionsFilePath, localeProvider);
+        FileNameProvider getEmptyQuestionProvider(@Value("${questions.filePath.empty}") String questionsFilePath, LocaleProvider localeProvider){
+            return new FileNameProvider(questionsFilePath, localeProvider);
         }
 
         @Bean("fullQuestionDao")
-        QuestionDao getFullQuestionDao(@Qualifier("fullQuestionProvider") QuestionsFileNameProvider questionsFileNameProvider){
-            return new QuestionDaoCsv(questionsFileNameProvider);
+        QuestionDao getFullQuestionDao(@Qualifier("fullQuestionProvider") FileNameProvider fileNameProvider){
+            return new QuestionDaoCsv(fileNameProvider);
         }
         
 
         @Bean("emptyQuestionDao")
-        QuestionDao getEmptyQuestionDao(@Qualifier("emptyQuestionProvider") QuestionsFileNameProvider questionsFileNameProvider){
-            return new QuestionDaoCsv(questionsFileNameProvider);
+        QuestionDao getEmptyQuestionDao(@Qualifier("emptyQuestionProvider") FileNameProvider fileNameProvider){
+            return new QuestionDaoCsv(fileNameProvider);
         }
     }
 }

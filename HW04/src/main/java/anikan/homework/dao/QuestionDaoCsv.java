@@ -1,21 +1,17 @@
 package anikan.homework.dao;
 
 import anikan.homework.Exceptions.QuestionsNotFoundException;
-import anikan.homework.config.QuestionsFileNameProvider;
 import anikan.homework.domain.Question;
 import anikan.homework.service.FileNameProvider;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
-import java.util.LinkedList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
