@@ -2,7 +2,7 @@ package anikan.homework.dao;
 
 import anikan.homework.Exceptions.QuestionsNotFoundException;
 import anikan.homework.domain.Question;
-import anikan.homework.service.FileNameProvider;
+import anikan.homework.config.FileNameProvider;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
@@ -15,14 +15,15 @@ import static java.util.Objects.isNull;
 
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
-    private final String questionsFilePath;
+    private final FileNameProvider fileNameProvider;
 
     public QuestionDaoCsv(FileNameProvider fileNameProvider) {
-        questionsFilePath = fileNameProvider.getQuestionsFilePath();
+        this.fileNameProvider = fileNameProvider;
     }
 
     @Override
     public List<Question> getAll() {
+        String questionsFilePath = fileNameProvider.getQuestionsFilePath();
         try (InputStream questionsStream = this.getClass().getClassLoader().getResourceAsStream(questionsFilePath)){
             if (isNull(questionsStream))
                 throw new QuestionsNotFoundException("Файл с вопросами отсутствует!");

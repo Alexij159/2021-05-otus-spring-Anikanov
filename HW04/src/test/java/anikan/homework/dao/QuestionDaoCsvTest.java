@@ -3,9 +3,8 @@ package anikan.homework.dao;
 import anikan.homework.Exceptions.QuestionsNotFoundException;
 import anikan.homework.config.LocaleProvider;
 import anikan.homework.domain.Question;
-import anikan.homework.service.FileNameProvider;
+import anikan.homework.config.FileNameProvider;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +12,6 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.LinkedList;
 import java.util.List;
