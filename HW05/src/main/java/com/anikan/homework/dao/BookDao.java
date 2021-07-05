@@ -9,7 +9,6 @@ public interface BookDao {
     Book getById(Long id);
     List<Book> getAll();
     Long insert(Book book);
-    boolean updateById(Long id, Book book);
     boolean update(Book book);
     void deleteById(Long id);
 }

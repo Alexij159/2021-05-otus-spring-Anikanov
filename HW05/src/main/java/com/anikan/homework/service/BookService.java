@@ -9,6 +9,5 @@ public interface BookService {
     Book getById(Long id);
     List<Book> getAll();
     Long insertNew(Book book);
-    boolean update(Long id, Book book);
     boolean update(Book book);
 }

@@ -1,6 +1,8 @@
 package com.anikan.homework.dao;
 
+import com.anikan.homework.domain.Author;
 import com.anikan.homework.domain.Book;
+import com.anikan.homework.domain.Genre;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -27,39 +30,48 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public Book getById(Long id) {
         Map<String, Object> params = Map.of("id", id);
-        return namedParameterJdbcOperations.queryForObject("select id,title, authorId, genreId from books where id = :id", params, new BookMapper());
+        return namedParameterJdbcOperations.queryForObject("select b.id, b.title, b.authorId as author_id, b.genreId as genre_id, g.name as genre_name, " +
+                "a.fullName as author_fullName, a.shortName as author_shortName, a.BIRTHDATE as author_birthDate " +
+                "from books b " +
+                "left join genres g on b.genreId = g.id " +
+                "left join authors a on b.authorId = a.id " +
+                "where b.id = :id", params, new BookMapper());
     }
 
     @Override
     public List<Book> getAll() {
-        return jdbc.query("select id,title, authorId, genreId from books", new BookMapper());
+        return jdbc.query("select b.id, b.title, b.authorId as author_id, b.genreId as genre_id, g.name as genre_name, " +
+                "a.fullName as author_fullName, a.shortName as author_shortName, a.birthDate as author_birthDate " +
+                "from books b " +
+                "left join genres g on b.genreId = g.id " +
+                "left join authors a on b.authorId = a.id ", new BookMapper());
     }
 
     @Override
     public Long insert(Book book) {
         KeyHolder kh = new GeneratedKeyHolder();
-        MapSqlParameterSource params = new MapSqlParameterSource(Map.of("title", book.getTitle(), "authorId", book.getAuthorId(),
-                "genreId", book.getGenreId()));
-        namedParameterJdbcOperations.update("insert into books (title, authorId, genreId) values (:title, :authorId, :genreId)",
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", book.getId());
+        params.addValue("title", book.getTitle());
+        params.addValue("authorId", book.getAuthor().getId());
+        params.addValue("genreId", book.getGenre().getId());
+
+        namedParameterJdbcOperations.update("insert into books (id, title, authorId, genreId) values (:id, :title, :authorId, :genreId)",
                 params, kh);
         return kh.getKey().longValue();
     }
 
+
     @Override
-    public boolean updateById(Long id, Book book) {
-        MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", id, "title", book.getTitle(), "authorId", book.getAuthorId(),
-                "genreId", book.getGenreId()));
+    public boolean update(Book book) {
+        MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", book.getId(), "title", book.getTitle(), "authorId", book.getAuthor().getId(),
+                "genreId", book.getGenre().getId()));
         int updatedRows = namedParameterJdbcOperations.update("update books set title = :title, authorId = :authorId, genreId = :genreId where id = :id",
                 params);
 
         if (updatedRows == 1)
             return true;
         return false;
-    }
-
-    @Override
-    public boolean update(Book book) {
-        return updateById(book.getId(), book);
     }
 
     @Override
@@ -74,9 +86,10 @@ public class BookDaoJdbc implements BookDao {
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
             String title = resultSet.getString("title");
-            long authorId = resultSet.getLong("AUTHORID");
-            long genreId = resultSet.getLong("genreid");
-            return new Book(id,title,authorId,genreId);
+            Genre g = new Genre(resultSet.getLong("genre_id"), resultSet.getString("genre_name"));
+            Author a = new Author(resultSet.getLong("author_id"), resultSet.getString("author_fullName"),
+                    resultSet.getString("author_shortName"), resultSet.getDate("author_birthDate").toLocalDate());
+            return new Book(id,title,a,g);
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.anikan.homework.service;
 
 import com.anikan.homework.Exceptions.BookCreationException;
+import com.anikan.homework.Exceptions.NoSuchAuthorException;
 import com.anikan.homework.Exceptions.NoSuchBookException;
+import com.anikan.homework.Exceptions.NoSuchGenreException;
 import com.anikan.homework.dao.BookDao;
 import com.anikan.homework.domain.Book;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -9,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -46,12 +49,15 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public boolean update(Long id, Book book) {
-        return bookDao.updateById(id, book);
-    }
-
-    @Override
     public boolean update(Book book) {
-        return bookDao.update(book);
+        try {
+            return bookDao.update(book);
+        } catch (DataIntegrityViolationException exception){
+            if (Objects.requireNonNull(exception.getMessage()).contains("AUTHORS"))
+                throw new NoSuchAuthorException(exception);
+            if (exception.getMessage().contains("GENRE"))
+                throw new NoSuchGenreException(exception);
+        }
+        return false;
     }
 }

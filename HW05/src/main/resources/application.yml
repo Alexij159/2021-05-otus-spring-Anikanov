@@ -5,6 +5,7 @@ spring:
     interactive:
       enabled: true
 
+
   h2:
     console:
       path: /h2-console

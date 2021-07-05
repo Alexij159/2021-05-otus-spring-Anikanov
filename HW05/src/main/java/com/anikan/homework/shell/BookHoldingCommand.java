@@ -6,6 +6,7 @@ import com.anikan.homework.Exceptions.NoSuchBookException;
 import com.anikan.homework.Exceptions.NoSuchGenreException;
 import com.anikan.homework.domain.Author;
 import com.anikan.homework.domain.Book;
+import com.anikan.homework.domain.Genre;
 import com.anikan.homework.service.AuthorService;
 import com.anikan.homework.service.BookService;
 import com.anikan.homework.service.GenreService;
@@ -16,9 +17,12 @@ import org.springframework.shell.standard.ShellMethod;
 public class BookHoldingCommand {
 
     private final BookService bookService;
-
-    public BookHoldingCommand(BookService bookService) {
+    private final GenreService genreService;
+    private final AuthorService authorService;
+    public BookHoldingCommand(BookService bookService, GenreService genreService, AuthorService authorService) {
         this.bookService = bookService;
+        this.genreService = genreService;
+        this.authorService = authorService;
     }
 
 
@@ -34,7 +38,7 @@ public class BookHoldingCommand {
         Book b = null;
         try {
             b = bookService.getById(id);
-        }catch (NoSuchBookException ex){
+        }  catch (NoSuchBookException ex){
             return "There is no such book.";
         }
         return b.toString();
@@ -42,25 +46,33 @@ public class BookHoldingCommand {
 
     @ShellMethod(value = "Create book", key = {"createBook", "create book"})
     public String createBook(String title, Long authorId, Long genreId){
-        Book b = new Book(title,authorId,genreId);
         try {
+            Genre g = genreService.getById(genreId);
+            Author a = authorService.getById(authorId);
+            Book b = new Book(title,a,g);
             Long bookId = bookService.insertNew(b);
             return "We created the book with ID: " + bookId.toString();
-        }catch (BookCreationException ex){
-            return "There is no author or genre with such ID.";
+        } catch (NoSuchGenreException ex){
+            return "There is no genre with such ID.";
+        } catch (NoSuchAuthorException ex){
+            return "There is no author with such ID.";
         }
     }
 
     @ShellMethod(value = "Update book", key = {"updateBook", "update book"})
     public String updateBook(Long id, String title, Long authorId, Long genreId){
-        Book b = new Book(id,title,authorId,genreId);
         try {
+            Genre g = genreService.getById(genreId);
+            Author a = authorService.getById(authorId);
+            Book b = new Book(id,title,a,g);
             if(bookService.update(b)) {
                 return "Book was updated";
             }
             return "Book was not updated";
-        }catch (NoSuchBookException ex){
-            return "There is no book with such id";
+        } catch (NoSuchGenreException ex) {
+            return "There is no genre with such ID.";
+        } catch (NoSuchAuthorException ex){
+            return "There is no author with such ID.";
         }
     }
 
