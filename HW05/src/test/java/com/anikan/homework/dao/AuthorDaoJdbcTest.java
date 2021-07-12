@@ -51,12 +51,6 @@ class AuthorDaoJdbcTest {
         assertThat(authorDao.getById(id)).usingRecursiveComparison().ignoringExpectedNullFields().isEqualTo(a);
     }
 
-    @Test
-    void updateByIdNormalWork() {
-        Author a = new Author("Иванов Иван Иванович", "Иванов И.И.",  LocalDate.of(2000, 1, 1));
-        assertThat(authorDao.updateById(EXISTING_AUTHOR_ID, a)).isTrue();
-        assertThat(authorDao.getById(EXISTING_AUTHOR_ID)).usingRecursiveComparison().ignoringExpectedNullFields().isEqualTo(a);
-    }
 
     @Test
     void updateNormalWork() {
@@ -73,9 +67,9 @@ class AuthorDaoJdbcTest {
 
 
     @Test
-    void updateByIdShouldReturnFalse() {
-        Author a = new Author("Иванов Иван Иванович", "Иванов И.И.",  LocalDate.of(2000, 1, 1));
-        assertThat(authorDao.updateById(NONEXISTING_AUTHOR_ID, a)).isFalse();
+    void updateReturnFalse() {
+        Author a = new Author(NONEXISTING_AUTHOR_ID,"Иванов Иван Иванович", "Иванов И.И.",  LocalDate.of(2000, 1, 1));
+        assertThat(authorDao.update(a)).isFalse();
     }
 
 

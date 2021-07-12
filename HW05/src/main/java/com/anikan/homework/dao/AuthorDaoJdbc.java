@@ -49,21 +49,15 @@ public class AuthorDaoJdbc implements AuthorDao{
         return kh.getKey().longValue();
     }
 
+
     @Override
-    public boolean updateById(Long id, Author author) {
-        MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", id,"fullName", author.getFullName(), "shortName", author.getShortName(), "birthDate", author.getBirthDate()));
+    public boolean update(Author author) {
+        MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", author.getId(),"fullName", author.getFullName(), "shortName", author.getShortName(), "birthDate", author.getBirthDate()));
         int updatedRows = namedParameterJdbcOperations.update("update authors set fullName = :fullName, shortName = :shortName, " +
                         "birthDate = :birthDate where id = :id",
                 params);
 
-        if (updatedRows == 1)
-            return true;
-        return false;
-    }
-
-    @Override
-    public boolean update(Author author) {
-        return updateById(author.getId(),author);
+        return updatedRows == 1;
     }
 
     @Override

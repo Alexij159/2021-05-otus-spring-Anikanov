@@ -9,6 +9,7 @@ import com.anikan.homework.domain.Author;
 import com.anikan.homework.domain.Book;
 import com.anikan.homework.domain.Genre;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class BookServiceTest {
     @Mock
     BookDao bookDao;
-    @Autowired
+    @InjectMocks
     BookServiceImpl bookService;
 
     private final Genre g1 = new Genre(1L,"поэма");
@@ -41,6 +42,7 @@ public class BookServiceTest {
 
     @Test
     public void getBookByIdNormalWork(){
+
         assertThat(bookService.getById(2L)).usingRecursiveComparison().isEqualTo(books.get(1));
     }
 

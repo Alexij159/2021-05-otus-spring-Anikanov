@@ -41,11 +41,6 @@ public class AuthorServiceImpl implements AuthorService{
     }
 
     @Override
-    public boolean update(Long id, Author author) {
-        return authorDao.updateById(id,author);
-    }
-
-    @Override
     public boolean update(Author author) {
         return update(author);
     }

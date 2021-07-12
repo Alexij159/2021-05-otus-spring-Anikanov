@@ -51,12 +51,12 @@ public class BookDaoJdbc implements BookDao {
     public Long insert(Book book) {
         KeyHolder kh = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("id", book.getId());
+        //params.addValue("id", book.getId());
         params.addValue("title", book.getTitle());
         params.addValue("authorId", book.getAuthor().getId());
         params.addValue("genreId", book.getGenre().getId());
 
-        namedParameterJdbcOperations.update("insert into books (id, title, authorId, genreId) values (:id, :title, :authorId, :genreId)",
+        namedParameterJdbcOperations.update("insert into books (title, authorId, genreId) values (:title, :authorId, :genreId)",
                 params, kh);
         return kh.getKey().longValue();
     }
