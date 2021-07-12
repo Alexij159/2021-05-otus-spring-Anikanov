@@ -1,5 +1,7 @@
 package anikan.homework.service;
 
+import anikan.homework.domain.User;
+
 public interface UserService {
-    String welcomeUser();
+    User welcomeUser();
 }

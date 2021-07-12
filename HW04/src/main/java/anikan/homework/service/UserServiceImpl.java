@@ -1,5 +1,6 @@
 package anikan.homework.service;
 
+import anikan.homework.domain.User;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.isNull;
@@ -14,10 +15,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String welcomeUser() {
+    public User welcomeUser() {
         localizedIOService.localizedPrintln("tester.greeting");
         localizedIOService.localizedPrint("tester.name-question");
-        return localizedIOService.readLine();
+        String name =  localizedIOService.readLine();
+        if ("".equals(name) || isNull(name) ) {
+            return new User("Unknown user");
+        }
+        return new User(name);
     }
 
 

@@ -22,7 +22,7 @@ public class TestHoldingCommand {
 
     @ShellMethod(value = "Login command", key = {"l", "login"})
     public String login() {
-        this.user = new User(userService.welcomeUser());
+        this.user = userService.welcomeUser();
         return String.format("Добро пожаловать: %s", user.getName());
     }
 

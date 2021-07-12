@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-    private QuestionDao dao;
+    private final QuestionDao dao;
 
     public QuestionServiceImpl(QuestionDao dao) {
         this.dao = dao;
