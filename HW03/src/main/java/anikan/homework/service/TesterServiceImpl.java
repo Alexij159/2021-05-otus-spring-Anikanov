@@ -18,7 +18,7 @@ public class TesterServiceImpl implements TesterService {
     private final LocalizedIOService localizedIOService;
 
 
-    public TesterServiceImpl(QuestionService questionService, ScoreConfig scoreProperties, IOService ioService, UserService userService, LocaleMessagesSource localeMessagesSource, LocalizedIOService localizedIOService) {
+    public TesterServiceImpl(QuestionService questionService, ScoreConfig scoreProperties, UserService userService, LocalizedIOService localizedIOService) {
         this.questionService = questionService;
         this.scoreProperties = scoreProperties;
         this.localizedIOService = localizedIOService;
@@ -33,7 +33,7 @@ public class TesterServiceImpl implements TesterService {
 
         int score = test(user);
         TestResult testResult = new TestResult(user, score);
-        localizedIOService.printfWithParameterizedLocalization("tester.scoring", Collections.singletonList(scoreProperties.getDescriptionFor(testResult.getScore())));
+        localizedIOService.printfWithParameterizedLocalization("tester.scoring", scoreProperties.getDescriptionFor(testResult.getScore()));
     }
 
 
@@ -46,7 +46,7 @@ public class TesterServiceImpl implements TesterService {
     private int test(User user) {
         int currentScore = 0;
         for (Question q :questionService.getQuestions()) {
-            localizedIOService.printfWithParameterizedLocalization("tester.enter-answer", Arrays.asList(new Object[]{user.getName(), q.getId()}));
+            localizedIOService.printfWithParameterizedLocalization("tester.enter-answer", user.getName(), q.getId());
             String answer = localizedIOService.readLine();
             if (q.getCorrectAnswer().equalsIgnoreCase(answer)) {
                 currentScore++;
