@@ -42,7 +42,7 @@ public class BookServiceImpl implements BookService{
     public Long insertNew(Book book) {
         try {
             return bookDao.insert(book);
-        } catch (DataIntegrityViolationException ex) {
+        } catch (Exception ex) {
             throw new BookCreationException(ex);
         }
 
