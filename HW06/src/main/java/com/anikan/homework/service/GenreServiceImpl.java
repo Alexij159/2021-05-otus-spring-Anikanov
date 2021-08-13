@@ -41,12 +41,7 @@ public class GenreServiceImpl implements GenreService{
     }
 
     @Override
-    public boolean update(Long id, Genre genre) {
-        return genreDao.updateById(id, genre);
-    }
-
-    @Override
-    public boolean update(Genre genre) {
+    public Genre update(Genre genre) {
         return genreDao.update(genre);
     }
 }

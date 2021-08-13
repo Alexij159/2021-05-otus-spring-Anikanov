@@ -9,6 +9,5 @@ public interface GenreService {
     Genre getById(Long id);
     List<Genre> getAll();
     Long insertNew(Genre genre);
-    boolean update(Long id, Genre genre);
-    boolean update(Genre genre);
+    Genre update(Genre genre);
 }

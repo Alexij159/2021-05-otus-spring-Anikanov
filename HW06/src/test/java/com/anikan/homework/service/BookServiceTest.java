@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -80,24 +81,15 @@ public class BookServiceTest {
     @Test
     public void updateBookNormalWork() {
         Book book = new Book(1L,"Title", a1, g1);
-        given(bookDao.update(book)).willReturn(true);
-        assertThat(bookService.update(book)).isTrue();
-        given(bookDao.getById(book.getId())).willReturn(book);
-        assertThat(bookService.getById(book.getId())).usingRecursiveComparison().isEqualTo(book);
-    }
-
-    @Test
-    public void updateBookShouldReturnFalse() {
-        Book book = new Book(100L,"Title", a1, g1);
-        given(bookDao.update(book)).willReturn(false);
-        assertThat(bookService.update(book)).isFalse();
+        given(bookDao.update(book)).willReturn(book);
+        assertThat(bookService.update(book)).usingRecursiveComparison().isEqualTo(book);
     }
 
     @Test
     public void updateBookShouldThrowAuthorException() {
         Book book = new Book(1L,"Title", NONEXIST_AUTHOR , g1);
         given(bookDao.update(book)).
-                willThrow(new DataIntegrityViolationException("AUTHORS does not contain such author"));
+                willThrow(new EntityNotFoundException("AUTHORS does not contain such author"));
         assertThrows(NoSuchAuthorException.class, () -> bookService.update(book));
     }
 
@@ -106,7 +98,7 @@ public class BookServiceTest {
     public void updateBookShouldThrowGenreException() {
         Book book = new Book(1L,"Title", a1 , NONEXIST_GENRE);
         given(bookDao.update(book)).
-                willThrow(new DataIntegrityViolationException("GENRES does not contain such genre"));
+                willThrow(new EntityNotFoundException("GENRES does not contain such genre"));
 
         assertThrows(NoSuchGenreException.class, () -> bookService.update(book));
     }

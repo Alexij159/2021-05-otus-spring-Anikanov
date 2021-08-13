@@ -65,10 +65,8 @@ public class BookHoldingCommand {
             Genre g = genreService.getById(genreId);
             Author a = authorService.getById(authorId);
             Book b = new Book(id,title,a,g);
-            if(bookService.update(b)) {
-                return "Book was updated";
-            }
-            return "Book was not updated";
+            bookService.update(b);
+            return "Book was updated";
         } catch (NoSuchGenreException ex) {
             return "There is no genre with such ID.";
         } catch (NoSuchAuthorException ex){

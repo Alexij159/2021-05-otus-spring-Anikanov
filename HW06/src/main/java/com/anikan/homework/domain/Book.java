@@ -1,9 +1,22 @@
 package com.anikan.homework.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "books")
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "title")
     private String title;
+
+    @ManyToOne(targetEntity = Author.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "authorid")
     private Author author;
+
+    @ManyToOne(targetEntity = Genre.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "genreid")
     private Genre genre;
 
     public Book(Long id, String title, Author author, Genre genre) {
@@ -19,6 +32,8 @@ public class Book {
         this.genre = genre;
     }
 
+    public Book() {
+    }
 
     public Long getId() {
         return id;

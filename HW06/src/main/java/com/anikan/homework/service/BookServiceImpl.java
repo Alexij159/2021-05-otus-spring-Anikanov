@@ -10,6 +10,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,15 +51,17 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public boolean update(Book book) {
+    public Book update(Book book) {
+        Book resultBook = null;
         try {
-            return bookDao.update(book);
-        } catch (DataIntegrityViolationException exception){
-            if (Objects.requireNonNull(exception.getMessage()).contains("AUTHORS"))
+            resultBook = bookDao.update(book);
+        } catch (EntityNotFoundException exception){ //todo посмотреть логику с ошибками
+            if (Objects.requireNonNull(exception.getMessage()).toLowerCase().contains("author"))
                 throw new NoSuchAuthorException(exception);
-            if (exception.getMessage().contains("GENRE"))
+            if (exception.getMessage().toLowerCase().contains("genre"))
                 throw new NoSuchGenreException(exception);
         }
-        return false;
+        return resultBook;
+
     }
 }

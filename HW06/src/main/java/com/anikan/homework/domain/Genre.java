@@ -1,8 +1,19 @@
 package com.anikan.homework.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "genres")
 public class Genre {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name")
     private String name;
+
+    public Genre() {
+    }
 
     public Genre(Long id, String name) {
         this.id = id;

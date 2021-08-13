@@ -1,12 +1,24 @@
 package com.anikan.homework.domain;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "authors")
 public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "fullname")
     private String fullName;
+    @Column(name = "shortname")
     private String shortName;
+    @Column(name = "birthdate")
     private LocalDate birthDate;
+
+    public Author() {
+    }
 
     public Author(String fullName, String shortName, LocalDate birthDate) {
         this.fullName = fullName;
