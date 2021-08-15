@@ -1,5 +1,6 @@
 package com.anikan.homework.dao;
 
+import com.anikan.homework.Exceptions.AuthorUpdateException;
 import com.anikan.homework.Exceptions.NoSuchAuthorException;
 import com.anikan.homework.domain.Author;
 import org.junit.jupiter.api.Test;
@@ -76,7 +77,7 @@ class AuthorDaoJpaTest {
     @Test
     void updateShouldThrowException() {
         Author a = new Author("Иванов Иван Иванович", "Иванов И.И.",  LocalDate.of(2000, 1, 1));
-        assertThrows(NoSuchAuthorException.class,() -> authorDao.update(a));
+        assertThrows(AuthorUpdateException.class,() -> authorDao.update(a));
     }
 
 

@@ -1,5 +1,7 @@
 package com.anikan.homework.dao;
 
+import com.anikan.homework.Exceptions.GenreUpdateException;
+import com.anikan.homework.domain.Book;
 import com.anikan.homework.domain.Genre;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,16 +75,17 @@ public class GenreDaoJpaTest {
     @Test
     void updateShouldThrowException() {
         Genre g = new Genre("роман");
-        assertThrows(RuntimeException.class,() -> genreDao.update(g));
+        assertThrows(GenreUpdateException.class,() -> genreDao.update(g));
     }
 
 
 
     @Test
-    void deleteByShouldNotDeleteDependentAuthor() {
+    void deleteByShouldNotDeleteDependentGenre() {
         assertThatCode(() -> genreDao.getById(EXISTING_GENRE_ID))
                 .doesNotThrowAnyException();
         assertThatThrownBy(() -> genreDao.deleteById(EXISTING_GENRE_ID))
                 .isInstanceOf(PersistenceException.class);
     }
+
 }

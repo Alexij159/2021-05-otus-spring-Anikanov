@@ -1,14 +1,14 @@
 package com.anikan.homework.service;
 
-import com.anikan.homework.Exceptions.NoSuchBookException;
 import com.anikan.homework.Exceptions.NoSuchGenreException;
 import com.anikan.homework.dao.GenreDao;
-import com.anikan.homework.domain.Book;
 import com.anikan.homework.domain.Genre;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class GenreServiceImpl implements GenreService{
@@ -23,6 +23,9 @@ public class GenreServiceImpl implements GenreService{
         Genre genre = null;
         try {
             genre = genreDao.getById(id);
+            if (isNull(genre)){
+                throw new NoSuchGenreException("There is no genre with such ID.");
+            }
         } catch (EmptyResultDataAccessException exception){
             throw new NoSuchGenreException(exception);
         }

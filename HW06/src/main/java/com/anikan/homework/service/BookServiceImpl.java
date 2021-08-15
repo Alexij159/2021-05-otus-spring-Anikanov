@@ -6,14 +6,15 @@ import com.anikan.homework.Exceptions.NoSuchBookException;
 import com.anikan.homework.Exceptions.NoSuchGenreException;
 import com.anikan.homework.dao.BookDao;
 import com.anikan.homework.domain.Book;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -28,6 +29,9 @@ public class BookServiceImpl implements BookService{
         Book book = null;
         try {
             book = bookDao.getById(id);
+            if (isNull(book)){
+                throw new NoSuchBookException("There is no book with such ID");
+            }
         } catch (EmptyResultDataAccessException exception){
             throw new NoSuchBookException(exception);
         }
@@ -36,6 +40,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+
     public List<Book> getAll() {
         return bookDao.getAll();
     }
@@ -51,6 +56,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    @Transactional
     public Book update(Book book) {
         Book resultBook = null;
         try {
@@ -63,5 +69,11 @@ public class BookServiceImpl implements BookService{
         }
         return resultBook;
 
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        bookDao.deleteById(id);
     }
 }

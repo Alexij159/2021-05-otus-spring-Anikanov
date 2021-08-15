@@ -1,10 +1,8 @@
 package com.anikan.homework.service;
 
 import com.anikan.homework.Exceptions.NoSuchAuthorException;
-import com.anikan.homework.Exceptions.NoSuchBookException;
 import com.anikan.homework.dao.AuthorDao;
 import com.anikan.homework.domain.Author;
-import com.anikan.homework.domain.Book;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 

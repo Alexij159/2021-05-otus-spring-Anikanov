@@ -9,3 +9,16 @@ insert into books (ID,TITLE,AUTHORID,GENREID) values (2, 'Поэма2', 1, 1);
 insert into books (ID,TITLE,AUTHORID,GENREID) values (3, 'Стих1', 1, 2);
 insert into books (ID,TITLE,AUTHORID,GENREID) values (4, 'Стих2', 2, 2);
 
+
+insert into comments(ID,`message`, bookid) values (1, 'Нормальная книжка', 1);
+insert into comments(ID,`message`, bookid) values (2, 'Нормас', 1);
+insert into comments(ID,`message`, bookid) values (3, 'Нормас1', 2);
+insert into comments(ID,`message`, bookid) values (4, 'Нормас2', 2);
+insert into comments(ID,`message`, bookid) values (5, 'Нормас3', 2);
+insert into comments(ID,`message`, bookid) values (6, 'Плохо', 4);
+insert into comments(ID,`message`, bookid) values (7, 'Хорошо', 4);
+insert into comments(ID,`message`, bookid) values (8, 'Очень плохо', 4);
+insert into comments(ID,`message`, bookid) values (9, 'Фигня', 4);
+insert into comments(ID,`message`, bookid) values (10, 'Сойдет', 2);
+insert into comments(ID,`message`, bookid) values (11, 'кое-как', 2);
+insert into comments(ID,`message`, bookid) values (12, 'фьють', 2);

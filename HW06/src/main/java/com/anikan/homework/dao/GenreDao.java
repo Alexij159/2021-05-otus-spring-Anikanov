@@ -1,6 +1,5 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.domain.Author;
 import com.anikan.homework.domain.Genre;
 
 import java.util.List;

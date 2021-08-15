@@ -1,15 +1,16 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.Exceptions.NoSuchAuthorException;
+import com.anikan.homework.Exceptions.AuthorUpdateException;
 import com.anikan.homework.domain.Author;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @Repository
 public class AuthorDaoJpa implements AuthorDao{
@@ -40,8 +41,8 @@ public class AuthorDaoJpa implements AuthorDao{
 
     @Override
     public Author update(Author author) {
-        if (author.getId() == 0) {
-            throw new NoSuchAuthorException("Author should be inserted");
+        if (isNull(author.getId()) || author.getId() == 0) {
+            throw new AuthorUpdateException("Author should be inserted");
         }
         return entityManager.merge(author);
     }

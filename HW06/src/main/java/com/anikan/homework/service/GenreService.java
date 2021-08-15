@@ -1,6 +1,5 @@
 package com.anikan.homework.service;
 
-import com.anikan.homework.domain.Book;
 import com.anikan.homework.domain.Genre;
 
 import java.util.List;

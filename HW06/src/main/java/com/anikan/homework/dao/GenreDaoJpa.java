@@ -1,6 +1,6 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.Exceptions.NoSuchGenreException;
+import com.anikan.homework.Exceptions.GenreUpdateException;
 import com.anikan.homework.domain.Genre;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +9,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
+
+import static java.util.Objects.isNull;
+
 @Repository
 public class GenreDaoJpa implements GenreDao {
 
@@ -38,8 +41,9 @@ public class GenreDaoJpa implements GenreDao {
 
     @Override
     public Genre update(Genre genre) {
-        if (genre.getId() == 0)
-            throw new NoSuchGenreException("Genre should be inserted");
+        if (isNull(genre.getId()) || genre.getId() == 0) {
+            throw new GenreUpdateException("Genre should be inserted");
+        }
         return entityManager.merge(genre);
     }
 
