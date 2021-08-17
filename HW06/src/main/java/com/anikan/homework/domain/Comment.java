@@ -12,7 +12,7 @@ public class Comment {
     @Column(name = "message")
     private String message;
 
-    @ManyToOne(targetEntity = Book.class)
+    @ManyToOne(targetEntity = Book.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "bookid")
     private Book book;
 

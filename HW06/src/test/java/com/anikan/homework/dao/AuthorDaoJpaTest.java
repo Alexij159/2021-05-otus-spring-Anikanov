@@ -1,15 +1,12 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.Exceptions.AuthorUpdateException;
-import com.anikan.homework.Exceptions.NoSuchAuthorException;
+import com.anikan.homework.exceptions.AuthorUpdateException;
 import com.anikan.homework.domain.Author;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.persistence.PersistenceException;
 import java.time.LocalDate;

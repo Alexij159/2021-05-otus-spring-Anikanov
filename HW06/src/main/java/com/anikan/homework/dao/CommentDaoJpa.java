@@ -1,6 +1,6 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.Exceptions.CommentUpdateException;
+import com.anikan.homework.exceptions.CommentUpdateException;
 import com.anikan.homework.domain.Book;
 import com.anikan.homework.domain.Comment;
 import org.springframework.stereotype.Repository;
@@ -40,6 +40,7 @@ public class CommentDaoJpa implements CommentDao{
         Book book = entityManager.find(Book.class, bookId);
         comment.setBook(book);
         entityManager.persist(comment);
+        entityManager.flush();
         return comment.getId();
     }
 

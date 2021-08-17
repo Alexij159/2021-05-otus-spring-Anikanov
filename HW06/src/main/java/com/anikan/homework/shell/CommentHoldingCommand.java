@@ -14,7 +14,7 @@ public class CommentHoldingCommand {
         this.commentService = commentService;
     }
 
-    @Transactional
+
     @ShellMethod(value = "Show all comments", key={"showallcomments", "showAllComments", "show all comments"})
     public String showAllComments(){
         StringBuilder sb = new StringBuilder();

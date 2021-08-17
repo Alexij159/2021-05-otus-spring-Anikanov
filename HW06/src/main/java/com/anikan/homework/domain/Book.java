@@ -8,8 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "books")
-@NamedEntityGraphs({@NamedEntityGraph(name = "authors-entity-graph", attributeNodes = {@NamedAttributeNode("author")}),
-        @NamedEntityGraph(name = "genres-entity-graph", attributeNodes = {@NamedAttributeNode("genre")})})
+@NamedEntityGraph(name = "authors-genres-entity-graph", attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

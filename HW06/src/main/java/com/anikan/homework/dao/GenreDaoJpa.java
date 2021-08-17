@@ -1,6 +1,6 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.Exceptions.GenreUpdateException;
+import com.anikan.homework.exceptions.GenreUpdateException;
 import com.anikan.homework.domain.Genre;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +36,7 @@ public class GenreDaoJpa implements GenreDao {
     @Override
     public Long insert(Genre genre) {
         entityManager.persist(genre);
+        entityManager.flush();
         return genre.getId();
     }
 

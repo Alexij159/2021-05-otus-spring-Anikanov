@@ -1,9 +1,10 @@
 package com.anikan.homework.service;
 
-import com.anikan.homework.Exceptions.BookCreationException;
-import com.anikan.homework.Exceptions.NoSuchAuthorException;
-import com.anikan.homework.Exceptions.NoSuchBookException;
-import com.anikan.homework.Exceptions.NoSuchGenreException;
+import com.anikan.homework.dto.BookDto;
+import com.anikan.homework.exceptions.BookCreationException;
+import com.anikan.homework.exceptions.NoSuchAuthorException;
+import com.anikan.homework.exceptions.NoSuchBookException;
+import com.anikan.homework.exceptions.NoSuchGenreException;
 import com.anikan.homework.dao.BookDao;
 import com.anikan.homework.domain.Author;
 import com.anikan.homework.domain.Book;
@@ -42,6 +43,9 @@ public class BookServiceTest {
             new Book(3L, "Стих1", a1, g2),
             new Book(4L, "Стих2", a2, g2));
 
+    private final Long EXISTING_BOOK_IO = 1L;
+    private final Book existingBook = new Book(1L,"Поэма1", a2, g1);
+
 
 
     @Test
@@ -79,26 +83,31 @@ public class BookServiceTest {
     @Test
     public void updateBookNormalWork() {
         Book book = new Book(1L,"Title", a1, g1);
-        given(bookDao.update(book)).willReturn(book);
-        assertThat(bookService.update(book)).usingRecursiveComparison().isEqualTo(book);
+        given(bookDao.update(existingBook)).willReturn(book);
+        given(bookDao.getById(EXISTING_BOOK_IO)).willReturn(existingBook);
+        BookDto bookDto = new BookDto(book);
+        assertThat(bookService.update(bookDto)).usingRecursiveComparison().isEqualTo(new BookDto(book));
     }
 
     @Test
     public void updateBookShouldThrowAuthorException() {
         Book book = new Book(1L,"Title", NONEXIST_AUTHOR , g1);
-        given(bookDao.update(book)).
+        given(bookDao.getById(EXISTING_BOOK_IO)).willReturn(existingBook);
+        given(bookDao.update(existingBook)).
                 willThrow(new EntityNotFoundException("AUTHORS does not contain such author"));
-        assertThrows(NoSuchAuthorException.class, () -> bookService.update(book));
+        BookDto bookDto = new BookDto(book);
+        assertThrows(NoSuchAuthorException.class, () -> bookService.update(bookDto));
     }
 
 
     @Test
     public void updateBookShouldThrowGenreException() {
         Book book = new Book(1L,"Title", a1 , NONEXIST_GENRE);
-        given(bookDao.update(book)).
+        given(bookDao.getById(EXISTING_BOOK_IO)).willReturn(existingBook);
+        given(bookDao.update(existingBook)).
                 willThrow(new EntityNotFoundException("GENRES does not contain such genre"));
-
-        assertThrows(NoSuchGenreException.class, () -> bookService.update(book));
+        BookDto bookDto = new BookDto(book);
+        assertThrows(NoSuchGenreException.class, () -> bookService.update(bookDto));
     }
 
 

@@ -1,8 +1,9 @@
 package com.anikan.homework.shell;
 
-import com.anikan.homework.Exceptions.NoSuchAuthorException;
-import com.anikan.homework.Exceptions.NoSuchBookException;
-import com.anikan.homework.Exceptions.NoSuchGenreException;
+import com.anikan.homework.dto.BookDto;
+import com.anikan.homework.exceptions.NoSuchAuthorException;
+import com.anikan.homework.exceptions.NoSuchBookException;
+import com.anikan.homework.exceptions.NoSuchGenreException;
 import com.anikan.homework.domain.Author;
 import com.anikan.homework.domain.Book;
 import com.anikan.homework.domain.Genre;
@@ -30,17 +31,15 @@ public class BookHoldingCommand {
 
 
     @ShellMethod(value = "Show all books", key = {"showAllBooks", "showallbooks"})
-    @Transactional
     public String showAllBooks() {
         StringBuilder sb = new StringBuilder();
         bookService.getAll().forEach(b -> sb.append(b.toString()).append("\n"));
         return sb.toString();
     }
 
-    @Transactional
     @ShellMethod(value = "Show book by id", key = {"showBookById", "showbookbyid"})
     public String showBookById(Long id){
-        Book b = null;
+        BookDto b = null;
         try {
             b = bookService.getById(id);
         }  catch (NoSuchBookException ex){
@@ -49,7 +48,6 @@ public class BookHoldingCommand {
         return b.toString();
     }
 
-    @Transactional
     @ShellMethod(value = "Create book", key = {"createBook", "create book"})
     public String createBook(String title, Long authorId, Long genreId){
         try {
@@ -65,11 +63,11 @@ public class BookHoldingCommand {
         }
     }
 
-    @Transactional
+
     @ShellMethod(value = "Update book", key = {"updateBook", "update book"})
     public String updateBook(Long id, String title, Long authorId, Long genreId){
         try {
-            Book book = bookService.getById(id);
+            BookDto book = bookService.getById(id);
             if (isNull(book)){
                 return "There is no book with such ID";
             }
@@ -87,7 +85,6 @@ public class BookHoldingCommand {
         }
     }
 
-    @Transactional
     @ShellMethod(value = "Delete book", key = {"deleteBook", "delete book"})
     public String deleteBook(Long id){
         bookService.delete(id);

@@ -1,6 +1,6 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.Exceptions.BookUpdateException;
+import com.anikan.homework.exceptions.BookUpdateException;
 import com.anikan.homework.domain.Book;
 import org.springframework.stereotype.Repository;
 
@@ -26,16 +26,15 @@ public class BookDaoJpa implements BookDao {
     @Override
     public List<Book> getAll() {
         TypedQuery<Book> query = entityManager.createQuery("select b from Book b", Book.class);
-        EntityGraph<?> authorsEntityGraph = entityManager.getEntityGraph("authors-entity-graph");
+        EntityGraph<?> authorsEntityGraph = entityManager.getEntityGraph("authors-genres-entity-graph");
         query.setHint("javax.persistence.fetchgraph", authorsEntityGraph);
-        EntityGraph<?> genreEntityGraph = entityManager.getEntityGraph("genres-entity-graph");
-        query.setHint("javax.persistence.fetchgraph", genreEntityGraph);
         return query.getResultList();
     }
 
     @Override
     public Long insert(Book book) {
         entityManager.persist(book);
+        entityManager.flush();
         return book.getId();
     }
 

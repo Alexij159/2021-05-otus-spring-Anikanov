@@ -1,13 +1,14 @@
 package com.anikan.homework.service;
 
 import com.anikan.homework.domain.Book;
+import com.anikan.homework.dto.BookDto;
 
 import java.util.List;
 
 public interface BookService {
-    Book getById(Long id);
-    List<Book> getAll();
+    BookDto getById(Long id);
+    List<BookDto> getAll();
     Long insertNew(Book book);
-    Book update(Book book);
+    BookDto update(BookDto book);
     void delete(Long id);
 }

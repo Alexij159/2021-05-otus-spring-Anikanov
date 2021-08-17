@@ -1,19 +1,14 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.Exceptions.GenreUpdateException;
-import com.anikan.homework.domain.Book;
+import com.anikan.homework.exceptions.GenreUpdateException;
 import com.anikan.homework.domain.Genre;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 

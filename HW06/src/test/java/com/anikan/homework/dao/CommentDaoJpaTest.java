@@ -1,8 +1,6 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.Exceptions.CommentUpdateException;
-import com.anikan.homework.Exceptions.NoSuchAuthorException;
-import com.anikan.homework.domain.Author;
+import com.anikan.homework.exceptions.CommentUpdateException;
 import com.anikan.homework.domain.Book;
 import com.anikan.homework.domain.Comment;
 import org.junit.jupiter.api.Test;
@@ -11,8 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
-import javax.persistence.PersistenceException;
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;

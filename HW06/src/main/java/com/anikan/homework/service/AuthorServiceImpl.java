@@ -1,10 +1,12 @@
 package com.anikan.homework.service;
 
-import com.anikan.homework.Exceptions.NoSuchAuthorException;
+import com.anikan.homework.exceptions.NoSuchAuthorException;
 import com.anikan.homework.dao.AuthorDao;
 import com.anikan.homework.domain.Author;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class AuthorServiceImpl implements AuthorService{
         this.authorDao = authorDao;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Author getById(Long id) {
         Author author = null;
@@ -26,7 +29,6 @@ public class AuthorServiceImpl implements AuthorService{
             if (isNull(author)){
                 throw new NoSuchAuthorException("There is no author with such ID.");
             }
-
         } catch (EmptyResultDataAccessException exception){
             throw new NoSuchAuthorException(exception);
         }
@@ -34,21 +36,25 @@ public class AuthorServiceImpl implements AuthorService{
         return author;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Author> getAll() {
         return authorDao.getAll();
     }
 
+    @Transactional
     @Override
     public Long insertNew(Author author) {
         return authorDao.insert(author);
     }
 
+    @Transactional
     @Override
     public Author update(Author author) {
         return authorDao.update(author);
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         authorDao.deleteById(id);

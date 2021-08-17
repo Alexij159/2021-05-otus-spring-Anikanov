@@ -1,4 +1,4 @@
-package com.anikan.homework.Exceptions;
+package com.anikan.homework.exceptions;
 
 public class BookUpdateException extends RuntimeException {
     public BookUpdateException() {

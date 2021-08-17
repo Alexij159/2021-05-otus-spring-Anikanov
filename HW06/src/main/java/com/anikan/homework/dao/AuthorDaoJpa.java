@@ -1,6 +1,6 @@
 package com.anikan.homework.dao;
 
-import com.anikan.homework.Exceptions.AuthorUpdateException;
+import com.anikan.homework.exceptions.AuthorUpdateException;
 import com.anikan.homework.domain.Author;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +36,7 @@ public class AuthorDaoJpa implements AuthorDao{
     @Override
     public Long insert(Author author) {
         entityManager.persist(author);
+        entityManager.flush();
         return author.getId();
     }
 
