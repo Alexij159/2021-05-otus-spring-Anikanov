@@ -10,6 +10,8 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 public class BookDto {
     private Long id;
     private String title;
@@ -31,7 +33,7 @@ public class BookDto {
         this.author = book.getAuthor();
         this.genre = book.getGenre();
         this.comments = book.getComments();
-        comments.size();
+        if (nonNull(comments) && comments.size() > 0);
     }
 
     public Long getId() {

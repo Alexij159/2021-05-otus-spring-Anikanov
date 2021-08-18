@@ -20,4 +20,4 @@ CREATE TABLE BOOKS(ID BIGINT auto_increment PRIMARY KEY,
 CREATE TABLE COMMENTS(ID BIGINT auto_increment PRIMARY KEY,
                 MESSAGE VARCHAR,
                 BOOKID BIGINT,
-                FOREIGN KEY(BOOKID) REFERENCES BOOKS(ID));
+                FOREIGN KEY(BOOKID) REFERENCES BOOKS(ID) on delete cascade);

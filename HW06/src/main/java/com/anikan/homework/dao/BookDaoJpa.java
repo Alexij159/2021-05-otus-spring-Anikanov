@@ -48,7 +48,6 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public void deleteById(Long id) {
-        commentDao.deleteByBookId(id);
         Query query = entityManager.createQuery("delete from Book b where b.id = :id");
         query.setParameter("id",id);
         query.executeUpdate();
