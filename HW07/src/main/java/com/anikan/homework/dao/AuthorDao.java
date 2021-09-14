@@ -5,10 +5,10 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface AuthorDao extends CrudRepository<Author, Long> {
+public interface AuthorDao extends CrudRepository<Author, Long>, AuthorDaoCustom {
 //    Author getById(Long id);
     List<Author> findAll();
-    Long insert(Author author);
-//    Author update(Author author);
+//    Long insert(Author author);
+
 //    void deleteById(Long id);
 }
